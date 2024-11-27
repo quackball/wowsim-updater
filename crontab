@@ -1,0 +1,1 @@
+0 * * * * ash /home/root/update-sim.sh /home/root

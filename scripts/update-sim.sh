@@ -1,9 +1,7 @@
 #!/bin/ash
-exec &> >(tee wowsim.log)
-set -x
+# set -x
 
 if [ -n "$1" ]; then
-    echo switching to directory: $1
     cd $1
 fi
 
@@ -26,14 +24,25 @@ if [ "$current_version" != "$remote_version" ]; then
     sed -i -r "s/$current_version/$remote_version/g" current_version.txt
 
     echo "Updated to version: $remote_version"
+
+    sim_pid=$(ps aux | grep '[w]owsimcata' | awk '{print $1}')
+
+    if [ -n "$sim_pid" ]; then
+        echo "killing pid: $sim_pid"
+
+        source stop-sim.sh "$sim_pid"
+    fi
+
+    echo "starting sim post update"
+    ./wowsimcata-amd64-linux -host 0.0.0.0:3333 &
+else
+    sim_pid=$(ps aux | grep '[w]owsimcata' | awk '{print $1}')
+
+    if [ -z $sim_pid ]; then
+        echo "starting sim"
+
+        ./wowsimcata-amd64-linux -host 0.0.0.0:3333 &
+    else
+        echo "sim already running"
+    fi
 fi
-
-sim_pid=$(pgrep wowsim)
-
-if [ -n "$sim_pid" ]; then
-    pgrep wowsim | xargs kill -9
-fi
-
-echo "starting server"
-
-./wowsimcata-amd64-linux -host 0.0.0.0:3333
