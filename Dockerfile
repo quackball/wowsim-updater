@@ -7,7 +7,6 @@ ENV TZ=$TZ
 RUN apk add --no-cache busybox-openrc curl jq unzip wget gcompat tzdata
 
 WORKDIR /home/root
-RUN touch wowsim.log
 COPY ./scripts/* ./
 COPY tz.env ./tz.env
 COPY profile /root/.profile
