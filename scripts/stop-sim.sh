@@ -4,7 +4,7 @@
 if [[ -n "$1" ]]; then
     sim_pid="$1"
 else
-    sim_pid=$(ps aux | grep '[w]owsimcata' | awk '{print $1}')
+    sim_pid=$(ps aux | grep '[w]owsimmop' | awk '{print $1}')
 fi
 
 if [[ -n $sim_pid ]]; then 
