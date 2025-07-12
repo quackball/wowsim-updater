@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.18
 
 # Default timezone to Denver
 ARG TZ=America/Denver
@@ -13,6 +13,11 @@ COPY profile /root/.profile
 COPY crontab /tmp/crontab
 RUN cat /tmp/crontab > /etc/crontabs/root
 
+# Port 3333 is used for the application
 EXPOSE 3333
 
-CMD ["ash", "setup.sh"]
+# Healthcheck for the application
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3333/health || exit 1
+
+ENTRYPOINT ["ash", "setup.sh"]
