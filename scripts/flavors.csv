@@ -1,0 +1,9 @@
+flavor,repository,binary_prefix
+forever,wowsims/forever,wowsimforever
+mop,wowsims/mop,wowsimmop
+cata,wowsims/cata,wowsimcata
+wotlk,wowsims/wotlk,wowsimwotlk
+classic,wowsims/classic,wowsimclassic
+sod,wowsims/sod,wowsimsod
+tbc,wowsims/tbc,wowsimtbc
+tbc-new,wowsims/tbc-new,wowsimtbc

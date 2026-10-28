@@ -1,2 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+*.sh text eol=lf
+*.csv text eol=lf
+crontab text eol=lf
+profile text eol=lf
+tz.env text eol=lf

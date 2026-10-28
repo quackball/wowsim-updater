@@ -2,14 +2,22 @@
 # Shared by the Bash launcher and Alpine ash scripts.
 resolve_flavor() {
     WOWSIM_FLAVOR=${1:-${WOWSIM_FLAVOR:-forever}}
-    case "$WOWSIM_FLAVOR" in
-        forever|mop|cata|wotlk|classic|sod|tbc) SIM_REPO="wowsims/$WOWSIM_FLAVOR"; SIM_PREFIX="wowsim$WOWSIM_FLAVOR" ;;
-        tbc-new) SIM_REPO=wowsims/tbc-new; SIM_PREFIX=wowsimtbc ;;
-        *) echo "Unknown flavor: $WOWSIM_FLAVOR. Supported: forever mop cata wotlk classic sod tbc tbc-new" >&2; return 1 ;;
-    esac
-    SIM_BINARY="$SIM_PREFIX-amd64-linux"
-    SIM_ARCHIVE="$SIM_BINARY.zip"
-    export WOWSIM_FLAVOR
+    flavor_config="${SIM_ROOT:-${script_dir:-.}/scripts}/flavors.csv"
+    supported=
+    while IFS=, read -r flavor repository binary_prefix; do
+        [ "$flavor" != flavor ] || continue
+        supported="$supported $flavor"
+        if [ "$WOWSIM_FLAVOR" = "$flavor" ]; then
+            SIM_REPO=$repository
+            SIM_PREFIX=$binary_prefix
+            SIM_BINARY="$SIM_PREFIX-amd64-linux"
+            SIM_ARCHIVE="$SIM_BINARY.zip"
+            export WOWSIM_FLAVOR
+            return 0
+        fi
+    done < "$flavor_config"
+    echo "Unknown flavor: $WOWSIM_FLAVOR. Supported:$supported" >&2
+    return 1
 }
 
 init_sim_paths() {

@@ -16,6 +16,7 @@ trap cleanup EXIT
 trap 'exit 1' HUP INT TERM
 mkdir -p "$tmp/bin" "$tmp/runtime" "$tmp/fixtures"
 cp "$repo"/scripts/*.sh "$tmp/runtime/"
+cp "$repo/scripts/flavors.csv" "$tmp/runtime/"
 export SIM_ROOT="$tmp/runtime" MOCK_ROOT="$tmp" MOCK_MODE=ok MOCK_TAG=v1
 export PATH="$tmp/bin:$PATH"
 
