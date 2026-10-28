@@ -3,8 +3,9 @@ FROM alpine:3.18
 # Default timezone to Denver
 ARG TZ=America/Denver
 ENV TZ=$TZ
+ENV WOWSIM_FLAVOR=forever
 
-RUN apk add --no-cache busybox-openrc curl jq unzip wget gcompat tzdata
+RUN apk add --no-cache busybox-openrc curl jq unzip gcompat tzdata util-linux
 
 WORKDIR /home/root
 COPY ./scripts/* ./
@@ -18,6 +19,6 @@ EXPOSE 3333
 
 # Healthcheck for the application
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:3333/health || exit 1
+    CMD ash /home/root/healthcheck.sh
 
 ENTRYPOINT ["ash", "setup.sh"]

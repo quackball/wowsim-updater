@@ -1,4 +1,6 @@
 current_version.txt
 wowsimcata-*
 wowsimmop-*
+flavors/
+wowsim*-amd64-linux*
 .vscode
